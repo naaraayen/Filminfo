@@ -1,0 +1,42 @@
+name: filminfo
+description: A new Flutter project.
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.4 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  equatable: ^2.0.5
+  http: ^0.13.5
+  flutter_bloc: ^8.1.2
+  get_it: ^7.2.0
+  flutter_dotenv: ^5.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - .env
+
+  fonts:
+    - family: BebasNeue
+      fonts:
+        - asset: assets/fonts/BebasNeue-Regular.ttf
+
+    - family: Rowdies
+      fonts:
+        - asset: assets/fonts/Rowdies-Bold.ttf
+
