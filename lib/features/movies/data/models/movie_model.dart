@@ -7,9 +7,9 @@ class MovieModel extends MovieEntity {
   const MovieModel({
     String? id,
     String? title,
-    int? releaseDate,
+    String? releaseDate,
     String? imageUrl,
-    int? runningTime,
+    String? runningTime,
     List<dynamic>? genre,
     List<ActorModel>? casts,
   }) : super(
@@ -35,9 +35,9 @@ class MovieModel extends MovieEntity {
     return MovieModel(
       id: map['title']['id'] ?? '',
       title: map['title']['title'] ?? '',
-      releaseDate: map['title']['year'] ?? '',
+      releaseDate: map['title']['year'].toString(),
       imageUrl: map['title']['image']['url'] ?? '',
-      runningTime: map['title']['runningTimeInMinutes'] ?? '',
+      runningTime: map['title']['runningTimeInMinutes'].toString(),
       genre: map['genres'] ?? '',
       casts: (map['casts'] != null
               ? List<ActorModel>.from(

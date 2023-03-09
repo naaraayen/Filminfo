@@ -1,3 +1,4 @@
+import 'search_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,6 +38,16 @@ class HomeScreen extends StatelessWidget {
               'Filiminfo',
               style: Styles.titleBigStyle,
             ),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(SearchScreen.routeName);
+                  },
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  )),
+            ],
             bottom: TabBar(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
@@ -50,7 +61,7 @@ class HomeScreen extends StatelessWidget {
           child: TabBarView(
             children: tabItems.map((item) {
               return BlocProvider<MovieCubit>(
-                  create: (ctx) => sl.call(), child: item['widget'] as Widget);
+                  create: (ctx) => sl.call<MovieCubit>(), child: item['widget'] as Widget);
             }).toList(),
           ),
         ),
