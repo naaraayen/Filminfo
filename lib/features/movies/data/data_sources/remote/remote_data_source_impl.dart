@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../../../core/consts/app_consts.dart';
 import '../../../domain/entities/movie_entity.dart';
@@ -21,7 +21,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           });
       final responseData = json.decode(response.body) as List<dynamic>;
       List<MovieEntity> comingSoonMoviesList = [];
-      final extractedData = responseData.take(2).toList();
+      final extractedData = responseData.take(1).toList();
       for (var item in extractedData) {
         comingSoonMoviesList.add(MovieModel(id: item['id']));
       }
@@ -43,7 +43,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           });
       final responseData = json.decode(response.body) as List<dynamic>;
       List<MovieEntity> popularMoviesList = [];
-      final extractedData = responseData.take(2).toList();
+      final extractedData = responseData.take(1).toList();
       for (var item in extractedData) {
         popularMoviesList.add(MovieModel(id: item));
       }
@@ -64,7 +64,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           });
       final responseData = json.decode(response.body) as List<dynamic>;
       List<MovieEntity> comingSoonMoviesList = [];
-      final extractedData = responseData.take(2).toList();
+      final extractedData = responseData.take(1).toList();
       for (var item in extractedData) {
         comingSoonMoviesList.add(MovieModel(id: item['id']));
       }
@@ -78,19 +78,25 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<List<MovieEntity>> getSearchMoviesList(String searchKeyword) async {
     try {
       final response = await http.get(
-          Uri.parse(
-              'https://$hostUrl/title/get-coming-soon-movies?q=$searchKeyword'),
+          Uri.parse('https://$hostUrl/title/find?q=$searchKeyword'),
           headers: {
             'X-RapidAPI-Key': dotenv.env['APIKEY'].toString(),
             'X-RapidAPI-Host': hostUrl
           });
+
       final responseData = json.decode(response.body);
-      List<MovieEntity> comingSoonMoviesList = [];
-      final extractedData = responseData['results'];
-      for (var i in extractedData) {
-        comingSoonMoviesList.add(MovieModel.fromMap(i));
+      final extractedData = (responseData['results'] as List).take(1);
+      List<MovieEntity> searchMovieList = [];
+      for (var item in extractedData) {
+        searchMovieList.add(MovieModel(
+          id: item['id'] ?? '',
+          title: item['title'] ?? '',
+          imageUrl: item['image']['url'] ?? '',
+          releaseDate: item['year'].toString(),
+          runningTime: item['runningTimeInMinutes'].toString(),
+        ));
       }
-      return comingSoonMoviesList;
+      return searchMovieList;
     } catch (e) {
       throw Exception();
     }
@@ -111,7 +117,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final extractedData = responseData[extractedId] as Map<String, dynamic>;
       return MovieModel.fromMap(extractedData);
     } catch (e) {
-      rethrow;
+      throw Exception();
     }
   }
 

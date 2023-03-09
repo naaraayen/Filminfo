@@ -16,6 +16,14 @@ class MovieFetched extends MovieState {
 
   const MovieFetched(this.moviesList);
   
+
+  MovieFetched copyWith({
+    List<MovieEntity>? moviesList,
+  }) {
+    return MovieFetched(
+      moviesList ?? this.moviesList,
+    );
+  }
 }
 
 class MovieFetchingError extends MovieState {}
