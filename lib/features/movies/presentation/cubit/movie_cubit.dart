@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:filminfo/features/movies/domain/usecases/get_best_picture_winners.dart';
+
 import '../../domain/entities/movie_entity.dart';
 import '../../domain/usecases/find_movie_by_id_usecase.dart';
 import '../../domain/usecases/get_coming_soon_movies.dart';
@@ -16,18 +18,30 @@ class MovieCubit extends Cubit<MovieState> {
   final GetTopRatedMoviesUsecase getTopRatedMoviesUsecase;
   final GetSearchMovieUsecase getSearchMovieUsecase;
   final FindMovieByIdUsecase findMovieByIdUsecase;
+  final GetBestPictureWinnersUsecase getBestPictureWinnersUsecase;
   MovieCubit({
     required this.getPopularMoviesUsecase,
     required this.getComingSoonMoviesUsecase,
     required this.getTopRatedMoviesUsecase,
     required this.getSearchMovieUsecase,
     required this.findMovieByIdUsecase,
+    required this.getBestPictureWinnersUsecase,
   }) : super(MovieInitial());
 
   void fetchPopularMovies() async {
     emit(MovieFetching());
     try {
       final moviesList = await getPopularMoviesUsecase.call();
+      emit(MovieFetched(moviesList));
+    } catch (e) {
+      emit(MovieFetchingError());
+    }
+  }
+
+  void fetchBestPictureWinners() async {
+    emit(MovieFetching());
+    try {
+      final moviesList = await getBestPictureWinnersUsecase.call();
       emit(MovieFetched(moviesList));
     } catch (e) {
       emit(MovieFetchingError());

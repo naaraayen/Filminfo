@@ -54,6 +54,29 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
+  Future<List<MovieEntity>> getBestPictureWinners() async {
+    try {
+      final response = await http.get(
+          Uri.parse(
+              'https://imdb8.p.rapidapi.com/title/get-best-picture-winners'),
+          headers: {
+            'X-RapidAPI-Key': dotenv.env['APIKEY'].toString(),
+            'X-RapidAPI-Host': hostUrl
+          });
+      final responseData = json.decode(response.body) as List<dynamic>;
+      List<MovieEntity> popularMoviesList = [];
+      final extractedData = responseData.take(1).toList();
+      print('ex data= $extractedData');
+      for (var item in extractedData) {
+        popularMoviesList.add(MovieModel(id: item));
+      }
+      return popularMoviesList;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
   Future<List<MovieEntity>> getTopRatedMovies() async {
     try {
       final response = await http.get(
@@ -85,7 +108,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           });
 
       final responseData = json.decode(response.body);
-      final extractedData = (responseData['results'] as List).take(1);
+      final extractedData = responseData['results'];
       List<MovieEntity> searchMovieList = [];
       for (var item in extractedData) {
         searchMovieList.add(MovieModel(
@@ -117,6 +140,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final extractedData = responseData[extractedId] as Map<String, dynamic>;
       return MovieModel.fromMap(extractedData);
     } catch (e) {
+      print(e);
       throw Exception();
     }
   }
