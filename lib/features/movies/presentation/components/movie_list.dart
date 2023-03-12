@@ -34,29 +34,26 @@ class _MovieListState extends State<MovieList>
         );
       }
       if (state is MovieFetched) {
-        return ListView.builder(
+        return GridView.builder(
             itemCount: state.moviesList.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 8.0, crossAxisSpacing: 8.0,childAspectRatio: 1),
             itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Container(
-                  height: 300,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: FutureBuilder(
-                    future: context.read<MovieCubit>().findMovieByIdUsecase(
-                        state.moviesList[index].id.toString()),
-                    builder: (ctx, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text('Something Went Wrong');
-                      }
-                      if (snapshot.hasData) {
-                        return MovieTile(movieData: snapshot.data);
-                      }
-                      return const Center(child: CircularProgressIndicator());
-                    },
-                  ),
+              return Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(10.0)),
+                child: FutureBuilder(
+                  future: context.read<MovieCubit>().findMovieByIdUsecase(
+                      state.moviesList[index].id.toString()),
+                  builder: (ctx, snapshot) {
+                    if (snapshot.hasError) {
+                      return  const Center(child: Text('Something Went Wrong'));
+                    }
+                    if (snapshot.hasData) {
+                      return MovieTile(movieData: snapshot.data);
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
                 ),
               );
             });

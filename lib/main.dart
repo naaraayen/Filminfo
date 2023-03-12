@@ -1,3 +1,4 @@
+import 'package:filminfo/core/consts/app_consts.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'features/movies/presentation/screens/home_screen.dart';
 import 'features/movies/presentation/screens/movie_info_screen.dart';
 
 import 'service_locater.dart' as di;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   di.setup();
@@ -22,25 +24,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<MovieCubit>(create: (ctx)=> di.sl.call<MovieCubit>())
+        BlocProvider<MovieCubit>(create: (ctx) => di.sl.call<MovieCubit>())
       ],
       child: MaterialApp(
         title: 'Filminfo',
         debugShowCheckedModeBanner: false,
         home: HomeScreen(),
-        theme: ThemeData(
-          primaryColor: Colors.black,
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.white,
-            ),
-            tabBarTheme: TabBarTheme(
-              labelPadding: const EdgeInsets.all(8.0),
-              indicatorSize: TabBarIndicatorSize.tab,
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.black,
-              indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.black),
-            )),
+        theme: Styles.themeData,
         routes: {
           SearchScreen.routeName: (_) => const SearchScreen(),
           MovieInfoScreen.routeName: (_) => const MovieInfoScreen(),

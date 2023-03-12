@@ -144,7 +144,7 @@ class _MovieCarouselState extends State<MovieCarousel> {
             }).toList(),
           );
         }
-        return const CircularProgressIndicator();
+        return const Center(child: CircularProgressIndicator());
       }),
     );
   }

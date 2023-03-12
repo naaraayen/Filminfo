@@ -2,8 +2,21 @@ import 'package:flutter/material.dart';
 
 String hostUrl = 'imdb8.p.rapidapi.com';
 
-
 class Styles {
+  static ThemeData themeData = ThemeData(
+      primaryColor: Colors.black,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.white,
+      ),
+      tabBarTheme: TabBarTheme(
+        labelPadding: const EdgeInsets.all(8.0),
+        indicatorSize: TabBarIndicatorSize.tab,
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.black,
+        indicator: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: Colors.black),
+      ));
+
   static const TextStyle labelStyle = TextStyle(
     color: Color.fromARGB(255, 255, 255, 255),
     fontSize: 16,
