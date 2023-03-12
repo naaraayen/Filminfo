@@ -1,3 +1,4 @@
+import 'package:filminfo/features/movies/domain/usecases/get_best_picture_winners.dart';
 import 'package:get_it/get_it.dart';
 
 import 'features/movies/data/data_sources/remote/remote_data_source.dart';
@@ -35,6 +36,7 @@ void setup() {
       GetSearchMovieUsecase(movieRepository: sl.call<MovieRepository>()));
   sl.registerSingleton<FindMovieByIdUsecase>(
       FindMovieByIdUsecase(movieRepository: sl.call<MovieRepository>()));
+  sl.registerSingleton<GetBestPictureWinnersUsecase>(GetBestPictureWinnersUsecase(movieRepository: sl.call<MovieRepository>()));
 
   // Cubit
   sl.registerFactory<MovieCubit>(() => MovieCubit(
@@ -42,5 +44,6 @@ void setup() {
       getComingSoonMoviesUsecase: sl.call<GetComingSoonMoviesUsecase>(),
       getTopRatedMoviesUsecase: sl.call<GetTopRatedMoviesUsecase>(),
       getSearchMovieUsecase: sl.call<GetSearchMovieUsecase>(),
-      findMovieByIdUsecase: sl.call<FindMovieByIdUsecase>()));
+      findMovieByIdUsecase: sl.call<FindMovieByIdUsecase>(),
+      getBestPictureWinnersUsecase: sl.call<GetBestPictureWinnersUsecase>()));
 }

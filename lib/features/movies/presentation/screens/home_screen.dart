@@ -1,9 +1,12 @@
+import '../components/movie_tile.dart';
 import 'search_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import '../../../../service_locater.dart';
+
 import '../../../../core/consts/app_consts.dart';
 import '../components/movie_list.dart';
 import '../cubit/movie_cubit.dart';
@@ -31,41 +34,118 @@ class HomeScreen extends StatelessWidget {
       length: tabItems.length,
       child: Scaffold(
         appBar: AppBar(
-            elevation: 1.0,
-            automaticallyImplyLeading: false,
-            titleSpacing: 4.0,
-            title: const Text(
-              'Filiminfo',
-              style: Styles.titleBigStyle,
-            ),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(SearchScreen.routeName);
-                  },
-                  icon: const Icon(
-                    Icons.search,
-                    color: Colors.black,
-                  )),
-            ],
-            bottom: TabBar(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-                tabs: tabItems.map((item) {
-                  return Text(
-                    item['label'],
-                  );
-                }).toList())),
+          elevation: 1.0,
+          automaticallyImplyLeading: false,
+          titleSpacing: 4.0,
+          title: const Text(
+            'Filiminfo',
+            style: Styles.titleBigStyle,
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(SearchScreen.routeName);
+                },
+                icon: const Icon(
+                  Icons.search,
+                  color: Colors.black,
+                )),
+          ],
+        ),
         body: Padding(
           padding: Styles.pagePadding,
-          child: TabBarView(
-            children: tabItems.map((item) {
-              return BlocProvider<MovieCubit>(
-                  create: (ctx) => sl.call<MovieCubit>(), child: item['widget'] as Widget);
-            }).toList(),
+          child: Column(
+            children: [
+              BlocProvider<MovieCubit>(
+                  create: (ctx) => sl.call<MovieCubit>(),
+                  child: const MovieCarousel()),
+              const SizedBox(height: 8.0),
+              TabBar(
+                  tabs: tabItems.map((item) {
+                return Text(
+                  item['label'],
+                );
+              }).toList()),
+              const SizedBox(height: 8.0),
+              Expanded(
+                child: TabBarView(
+                  children: tabItems.map((item) {
+                    return BlocProvider<MovieCubit>(
+                        create: (ctx) => sl.call<MovieCubit>(),
+                        child: item['widget'] as Widget);
+                  }).toList(),
+                ),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class MovieCarousel extends StatefulWidget {
+  const MovieCarousel({super.key});
+
+  @override
+  State<MovieCarousel> createState() => _MovieCarouselState();
+}
+
+class _MovieCarouselState extends State<MovieCarousel> {
+  @override
+  void initState() {
+    context.read<MovieCubit>().fetchBestPictureWinners();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.25,
+      width: double.infinity,
+      child: BlocBuilder<MovieCubit, MovieState>(builder: (context, state) {
+        if (state is MovieFetchingError) {
+          return const Center(
+            child: Text('Something Went Wrong'),
+          );
+        }
+        if (state is MovieFetched) {
+          return CarouselSlider(
+            carouselController: CarouselController(),
+            options: CarouselOptions(
+              enableInfiniteScroll: true,
+              enlargeFactor: 0.25,
+              aspectRatio: 16 / 9,
+              enlargeStrategy: CenterPageEnlargeStrategy.scale,
+              enlargeCenterPage: true,
+              autoPlay: false,
+            ),
+            items: state.moviesList.map((item) {
+              return Container(
+                height: 300,
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(10.0)),
+                child: FutureBuilder(
+                  future: context
+                      .read<MovieCubit>()
+                      .findMovieByIdUsecase(item.id.toString()),
+                  builder: (ctx, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something Went Wrong');
+                    }
+                    if (snapshot.hasData) {
+                      return MovieTile(movieData: snapshot.data);
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
+              );
+            }).toList(),
+          );
+        }
+        return const CircularProgressIndicator();
+      }),
     );
   }
 }

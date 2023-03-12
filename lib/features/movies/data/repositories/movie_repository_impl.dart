@@ -17,6 +17,11 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
+  Future<List<MovieEntity>> getBestPictureWinners() {
+    return remoteDataSource.getBestPictureWinners();
+  }
+
+  @override
   Future<List<MovieEntity>> getTopRatedMovies() {
     return remoteDataSource.getTopRatedMovies();
   }
