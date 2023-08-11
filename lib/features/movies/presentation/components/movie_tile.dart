@@ -22,7 +22,7 @@ class MovieTile extends StatelessWidget {
               movieData!.title.toString(),
               textAlign: TextAlign.center,
               style: Styles.labelStyle
-                  .copyWith(fontSize: 20, fontWeight: FontWeight.w600),
+                  .copyWith(fontWeight: FontWeight.w600),
             ),
             child: Container(
               foregroundDecoration: const BoxDecoration(

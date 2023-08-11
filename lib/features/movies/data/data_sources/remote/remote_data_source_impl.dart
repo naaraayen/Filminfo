@@ -21,7 +21,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           });
       final responseData = json.decode(response.body) as List<dynamic>;
       List<MovieEntity> comingSoonMoviesList = [];
-      final extractedData = responseData.take(1).toList();
+      final extractedData = responseData.take(3).toList();
       for (var item in extractedData) {
         comingSoonMoviesList.add(MovieModel(id: item['id']));
       }
@@ -43,7 +43,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           });
       final responseData = json.decode(response.body) as List<dynamic>;
       List<MovieEntity> popularMoviesList = [];
-      final extractedData = responseData.take(1).toList();
+      final extractedData = responseData.take(3).toList();
       for (var item in extractedData) {
         popularMoviesList.add(MovieModel(id: item));
       }
@@ -65,8 +65,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           });
       final responseData = json.decode(response.body) as List<dynamic>;
       List<MovieEntity> popularMoviesList = [];
-      final extractedData = responseData.take(1).toList();
-      print('ex data= $extractedData');
+      final extractedData = responseData.take(3).toList();
       for (var item in extractedData) {
         popularMoviesList.add(MovieModel(id: item));
       }
@@ -87,7 +86,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           });
       final responseData = json.decode(response.body) as List<dynamic>;
       List<MovieEntity> comingSoonMoviesList = [];
-      final extractedData = responseData.take(1).toList();
+      final extractedData = responseData.take(3).toList();
       for (var item in extractedData) {
         comingSoonMoviesList.add(MovieModel(id: item['id']));
       }
@@ -137,11 +136,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
             'X-RapidAPI-Host': hostUrl
           });
       final responseData = json.decode(response.body);
-      final extractedData = responseData[extractedId] as Map<String, dynamic>;
+      final extractedData = responseData[extractedId];
       return MovieModel.fromMap(extractedData);
     } catch (e) {
       print(e);
-      throw Exception();
+      rethrow;
     }
   }
 
