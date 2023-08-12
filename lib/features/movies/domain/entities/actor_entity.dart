@@ -5,9 +5,9 @@ class ActorEntity extends Equatable {
   final String? name;
   final String? category;
   const ActorEntity({
-    this.id,
-    this.name,
-    this.category,
+    required this.id,
+    required this.name,
+    required this.category,
   });
 
   @override

@@ -5,22 +5,14 @@ import 'actor_model.dart';
 
 class MovieModel extends MovieEntity {
   const MovieModel({
-    String? id,
-    String? title,
-    String? releaseDate,
-    String? imageUrl,
-    String? runningTime,
-    List<dynamic>? genre,
-    List<ActorModel>? casts,
-  }) : super(
-          id: id,
-          title: title,
-          releaseDate: releaseDate,
-          imageUrl: imageUrl,
-          runningTime: runningTime,
-          genre: genre,
-          casts: casts,
-        );
+    super.id,
+    super.title,
+    super.releaseDate,
+    super.imageUrl,
+    super.runningTime,
+    super.genre,
+    super.casts,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -35,9 +27,9 @@ class MovieModel extends MovieEntity {
     return MovieModel(
       id: map['title']['id'] ?? '',
       title: map['title']['title'] ?? '',
-      releaseDate: map['title']['year'].toString(),
+      releaseDate: map['title']['year'] ?? '',
       imageUrl: map['title']['image']['url'] ?? '',
-      runningTime: map['title']['runningTimeInMinutes'].toString(),
+      runningTime: map['title']['runningTimeInMinutes'] ?? '',
       genre: map['genres'] ?? '',
       casts: (map['casts'] != null
               ? List<ActorModel>.from(

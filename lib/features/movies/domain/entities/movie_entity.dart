@@ -5,19 +5,19 @@ import '../../data/models/actor_model.dart';
 class MovieEntity extends Equatable {
   final String? id;
   final String? title;
-  final String? releaseDate;
+  final int? releaseDate;
   final String? imageUrl;
-  final String? runningTime;
-  final List<dynamic>? genre;
+  final int? runningTime;
+  final dynamic genre;
   final List<ActorModel>? casts;
   const MovieEntity({
-    this.id,
-    this.title,
-    this.releaseDate,
-    this.imageUrl,
-    this.runningTime,
-    this.genre,
-    this.casts,
+    required this.id,
+    required this.title,
+    required this.releaseDate,
+    required this.imageUrl,
+    required this.runningTime,
+    required this.genre,
+    required this.casts,
   });
 
   @override

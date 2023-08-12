@@ -32,11 +32,14 @@ class _MovieListState extends State<MovieList>
         return const Center(
           child: Text('Error Fetching'),
         );
-      }
-      if (state is MovieFetched) {
+      } else if (state is MovieFetched) {
         return GridView.builder(
             itemCount: state.moviesList.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 8.0, crossAxisSpacing: 8.0,childAspectRatio: 1),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 8.0,
+                childAspectRatio: 1),
             itemBuilder: (context, index) {
               return Container(
                 decoration: BoxDecoration(
@@ -47,7 +50,7 @@ class _MovieListState extends State<MovieList>
                       state.moviesList[index].id.toString()),
                   builder: (ctx, snapshot) {
                     if (snapshot.hasError) {
-                      return  const Center(child: Text('Something Went Wrong'));
+                      return const Center(child: Text('Something Went Wrong'));
                     }
                     if (snapshot.hasData) {
                       return MovieTile(movieData: snapshot.data);
@@ -57,10 +60,11 @@ class _MovieListState extends State<MovieList>
                 ),
               );
             });
+      } else {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       }
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
     });
   }
 

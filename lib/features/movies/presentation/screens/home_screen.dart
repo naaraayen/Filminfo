@@ -1,15 +1,13 @@
-import '../components/movie_tile.dart';
-import 'search_screen.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:carousel_slider/carousel_slider.dart';
-import '../../../../service_locater.dart';
-
 import '../../../../core/consts/app_consts.dart';
+import '../../../../service_locater.dart';
 import '../components/movie_list.dart';
+import '../components/movie_tile.dart';
 import '../cubit/movie_cubit.dart';
+import 'search_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/HomeScreen';
